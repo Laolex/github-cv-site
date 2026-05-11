@@ -8,25 +8,43 @@
       name="description"
       content="Browse a live CV generated from GitHub profile and repository activity."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="site">
-      <header class="nav">
+    <main class="site" aria-live="polite">
+      <div class="ambient ambient-a" aria-hidden="true"></div>
+      <div class="ambient ambient-b" aria-hidden="true"></div>
+
+      <header class="nav shell">
         <a class="brand" href="/">// github cv</a>
         <a id="profileLink" class="ghost-btn" href="#" target="_blank" rel="noreferrer">Open GitHub</a>
       </header>
 
-      <section class="hero">
-        <p class="eyebrow">// live resume</p>
-        <h1>Browse a GitHub-powered CV in real time.</h1>
-        <p class="lead">
-          Profile details, language strengths, and project history are loaded directly from the
-          GitHub API.
-        </p>
+      <section class="hero shell">
+        <div class="hero-copy">
+          <p class="eyebrow">// live resume</p>
+          <h1>GitHub CV browsing with a cleaner, faster visual flow.</h1>
+          <p class="lead">
+            Profile details, language strengths, and project history load directly from GitHub and
+            stay filterable in one continuous layout.
+          </p>
+        </div>
+        <aside class="hero-aside" aria-label="Design preview">
+          <div class="term-row"><span class="dot"></span><span>PROFILE STREAM</span></div>
+          <div class="term-line"></div>
+          <div class="term-line short"></div>
+          <div class="term-line"></div>
+          <div class="term-line short"></div>
+        </aside>
       </section>
 
-      <section class="controls" aria-label="Repository filters">
+      <section class="controls shell" aria-label="Repository filters">
         <label class="field">
           <span>Search repositories</span>
           <input id="searchInput" type="search" placeholder="Type project name or topic" />
@@ -48,7 +66,7 @@
         </label>
       </section>
 
-      <section class="content-grid">
+      <section class="content-grid shell">
         <article class="panel profile-panel">
           <h2>// profile</h2>
           <div id="profileBlock" class="profile-block loading">
@@ -70,6 +88,11 @@
           <div id="repoList" class="repo-list"></div>
         </article>
       </section>
+
+      <footer class="footer shell">
+        <span>// built from GitHub API</span>
+        <a href="https://github.com/Laolex/github-cv-site" target="_blank" rel="noreferrer">Source</a>
+      </footer>
     </main>
 
     <script type="module" src="./script.js"></script>

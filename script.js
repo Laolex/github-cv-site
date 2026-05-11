@@ -22,10 +22,32 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
 }
 
+function ensureUrl(url) {
+  if (!url) return ""
+  if (url.startsWith("http://") || url.startsWith("https://")) return url
+  return `https://${url}`
+}
+
 function normalize(text) {
   return String(text || "")
     .trim()
     .toLowerCase()
+}
+
+function languageColor(language) {
+  const map = {
+    JavaScript: "#f1e05a",
+    TypeScript: "#3178c6",
+    Python: "#3572a5",
+    Rust: "#dea584",
+    Go: "#00add8",
+    Solidity: "#AA6746",
+    Shell: "#89e051",
+    HTML: "#e34c26",
+    CSS: "#563d7c",
+    Vue: "#41b883",
+  }
+  return map[language] || "#6b7280"
 }
 
 function setStatus(message, isError = false) {
@@ -35,6 +57,7 @@ function setStatus(message, isError = false) {
 
 function renderProfile(profile) {
   profileLink.href = profile.html_url || `https://github.com/${DEFAULT_USERNAME}`
+  profileLink.textContent = `Open @${profile.login || DEFAULT_USERNAME}`
 
   profileBlock.classList.remove("loading")
   profileBlock.innerHTML = `
@@ -46,7 +69,7 @@ function renderProfile(profile) {
       <div class="meta">
         ${profile.location ? `<p>Location: ${profile.location}</p>` : ""}
         ${profile.company ? `<p>Company: ${profile.company}</p>` : ""}
-        ${profile.blog ? `<a href="${profile.blog}" target="_blank" rel="noreferrer">${profile.blog}</a>` : ""}
+        ${profile.blog ? `<a href="${ensureUrl(profile.blog)}" target="_blank" rel="noreferrer">${profile.blog}</a>` : ""}
       </div>
     </div>
   `
@@ -121,14 +144,21 @@ function applyFilters() {
   setStatus(`Showing ${filtered.length} repositories`)
 
   filtered.forEach((repo) => {
+    const langColor = languageColor(repo.language)
+    const topics = Array.isArray(repo.topics) ? repo.topics.slice(0, 3) : []
     const card = document.createElement("article")
     card.className = "repo"
     card.innerHTML = `
       <a href="${repo.html_url}" target="_blank" rel="noreferrer">
         <h3>${repo.name}</h3>
         ${repo.description ? `<p>${repo.description}</p>` : `<p>No description provided.</p>`}
+        ${
+          topics.length
+            ? `<div class="languages">${topics.map((topic) => `<span class="chip">${topic}</span>`).join("")}</div>`
+            : ""
+        }
         <div class="repo-meta">
-          <span>${repo.language || "Text"}</span>
+          <span class="lang-pill"><span class="lang-dot" style="background:${langColor}"></span>${repo.language || "Text"}</span>
           <span>Stars ${formatNumber(repo.stargazers_count)}</span>
           <span>Forks ${formatNumber(repo.forks_count)}</span>
           <span>Updated ${formatDate(repo.updated_at)}</span>
@@ -163,6 +193,7 @@ async function loadCv() {
     repoList.innerHTML = ""
     repoCount.textContent = "0"
     setStatus("Could not load data from GitHub right now. Refresh to retry.", true)
+    profileLink.textContent = "Open GitHub"
     profileBlock.classList.remove("loading")
     profileBlock.innerHTML = `<p>GitHub profile is temporarily unavailable.</p>`
     statsBlock.innerHTML = ""
