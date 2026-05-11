@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub CV Browser</title>
+    <meta
+      name="description"
+      content="Browse a live CV generated from GitHub profile and repository activity."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="site">
+      <header class="nav">
+        <a class="brand" href="/">// github cv</a>
+        <a id="profileLink" class="ghost-btn" href="#" target="_blank" rel="noreferrer">Open GitHub</a>
+      </header>
+
+      <section class="hero">
+        <p class="eyebrow">// live resume</p>
+        <h1>Browse a GitHub-powered CV in real time.</h1>
+        <p class="lead">
+          Profile details, language strengths, and project history are loaded directly from the
+          GitHub API.
+        </p>
+      </section>
+
+      <section class="controls" aria-label="Repository filters">
+        <label class="field">
+          <span>Search repositories</span>
+          <input id="searchInput" type="search" placeholder="Type project name or topic" />
+        </label>
+        <label class="field">
+          <span>Language</span>
+          <select id="languageFilter">
+            <option value="">All languages</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Sort by</span>
+          <select id="sortFilter">
+            <option value="updated">Recently updated</option>
+            <option value="stars">Most starred</option>
+            <option value="forks">Most forked</option>
+            <option value="name">Name (A-Z)</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel profile-panel">
+          <h2>// profile</h2>
+          <div id="profileBlock" class="profile-block loading">
+            <div class="skeleton avatar"></div>
+            <div class="skeleton line"></div>
+            <div class="skeleton line short"></div>
+            <div class="skeleton line"></div>
+          </div>
+          <div id="stats" class="stats"></div>
+          <div id="languages" class="languages"></div>
+        </article>
+
+        <article class="panel repo-panel">
+          <div class="repo-header">
+            <h2>// repositories</h2>
+            <span id="repoCount" class="repo-count">0</span>
+          </div>
+          <div id="statusMessage" class="status">Loading repositories…</div>
+          <div id="repoList" class="repo-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
