@@ -12,8 +12,12 @@ const statusMessage = document.querySelector("#statusMessage")
 const searchInput = document.querySelector("#searchInput")
 const languageFilter = document.querySelector("#languageFilter")
 const sortFilter = document.querySelector("#sortFilter")
+const commandText = document.querySelector("#commandText")
 
 let allRepos = []
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+let revealObserver
+let typewriterStarted = false
 
 function formatNumber(value) {
   return Number(value || 0).toLocaleString("en-US")
@@ -135,7 +139,7 @@ function renderFeatured(repos) {
   featured.forEach((repo) => {
     const langColor = languageColor(repo.language)
     const item = document.createElement("article")
-    item.className = "featured-item"
+    item.className = "featured-item data-tilt reveal"
     item.innerHTML = `
       <a href="${repo.html_url}" target="_blank" rel="noreferrer">
         <h3>${repo.name}</h3>
@@ -166,7 +170,7 @@ function renderRepoList(repos) {
     const topics = Array.isArray(repo.topics) ? repo.topics.slice(0, 3) : []
 
     const card = document.createElement("article")
-    card.className = "repo"
+    card.className = "repo data-tilt reveal"
     card.innerHTML = `
       <a href="${repo.html_url}" target="_blank" rel="noreferrer">
         <h3>${repo.name}</h3>
@@ -182,6 +186,9 @@ function renderRepoList(repos) {
     `
     repoList.append(card)
   })
+
+  wireReveal()
+  wireTilt()
 }
 
 function applyFilters() {
@@ -226,6 +233,9 @@ async function loadCv() {
     renderProfile(profile)
     renderLanguageFilter(allRepos)
     applyFilters()
+    wireTypewriter()
+    wireReveal()
+    wireTilt()
   } catch (error) {
     repoList.innerHTML = ""
     featuredList.innerHTML = ""
@@ -238,6 +248,81 @@ async function loadCv() {
     statsBlock.innerHTML = ""
     languagesBlock.innerHTML = ""
   }
+}
+
+function wireTypewriter() {
+  if (!commandText || prefersReducedMotion || typewriterStarted) return
+  typewriterStarted = true
+
+  const lines = [
+    "rank repos by stargazer momentum",
+    "filter stack for production languages",
+    "scan update cadence across projects",
+    "highlight strongest portfolio signals",
+  ]
+
+  let lineIndex = 0
+  let charIndex = 0
+  let deleting = false
+
+  const tick = () => {
+    const current = lines[lineIndex]
+    if (!deleting) {
+      charIndex += 1
+      commandText.textContent = current.slice(0, charIndex)
+      if (charIndex >= current.length) {
+        deleting = true
+        setTimeout(tick, 1300)
+        return
+      }
+      setTimeout(tick, 38)
+      return
+    }
+
+    charIndex -= 1
+    commandText.textContent = current.slice(0, charIndex)
+    if (charIndex <= 0) {
+      deleting = false
+      lineIndex = (lineIndex + 1) % lines.length
+    }
+    setTimeout(tick, 22)
+  }
+
+  tick()
+}
+
+function wireReveal() {
+  if (prefersReducedMotion) return
+  const nodes = document.querySelectorAll(".reveal")
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("in-view")
+        })
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -60px 0px" },
+    )
+  }
+  nodes.forEach((node) => revealObserver.observe(node))
+}
+
+function wireTilt() {
+  if (prefersReducedMotion) return
+  const cards = document.querySelectorAll(".data-tilt")
+  cards.forEach((card) => {
+    card.onmousemove = (event) => {
+      const rect = card.getBoundingClientRect()
+      const px = (event.clientX - rect.left) / rect.width
+      const py = (event.clientY - rect.top) / rect.height
+      const rotY = (px - 0.5) * 5
+      const rotX = (0.5 - py) * 5
+      card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-2px)`
+    }
+    card.onmouseleave = () => {
+      card.style.transform = ""
+    }
+  })
 }
 
 searchInput.addEventListener("input", applyFilters)

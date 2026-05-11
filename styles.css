@@ -167,6 +167,34 @@ select:focus-visible {
   gap: 0.62rem;
 }
 
+.command-bar {
+  min-height: 44px;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.8rem;
+  background: #0f0f0f;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0 0.7rem;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+.command-prefix {
+  color: #626262;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.62rem;
+}
+
+.command-text {
+  color: #b4b4b4;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .eyebrow {
   margin: 0;
   color: var(--text-secondary);
@@ -286,6 +314,58 @@ select:focus-visible {
   position: sticky;
   top: 0.7rem;
   z-index: 5;
+}
+
+.story-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 0.95rem;
+  position: relative;
+  z-index: 2;
+}
+
+.story-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(180deg, #161616 0%, #101010 100%);
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+  transform-style: preserve-3d;
+}
+
+.story-card:hover {
+  border-color: color-mix(in srgb, var(--accent), var(--border) 55%);
+}
+
+.story-media {
+  height: 220px;
+  background-position: center;
+  background-size: cover;
+  filter: grayscale(0.28) contrast(1.15);
+  transition: transform 0.7s var(--ease), filter 0.7s var(--ease);
+}
+
+.story-card:hover .story-media {
+  transform: scale(1.05);
+  filter: grayscale(0.12) contrast(1.15);
+}
+
+.story-copy {
+  padding: 0.95rem 1rem 1.05rem;
+}
+
+.story-copy h3 {
+  margin: 0;
+  font-size: 1.16rem;
+  letter-spacing: -0.02em;
+}
+
+.story-copy p {
+  margin: 0.45rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.94rem;
+  line-height: 1.55;
 }
 
 .field {
@@ -452,6 +532,7 @@ select {
   padding: 0.9rem;
   background: linear-gradient(180deg, #1a1a1a 0%, #111111 100%);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+  transform-style: preserve-3d;
 }
 
 .featured-item:first-child {
@@ -495,6 +576,7 @@ select {
   padding: 0.88rem;
   background: linear-gradient(180deg, #171717 0%, #111111 100%);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+  transform-style: preserve-3d;
 }
 
 .repo:hover {
@@ -585,6 +667,17 @@ select {
   text-decoration: none;
 }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @keyframes shimmer {
   from {
     background-position: 200% 0;
@@ -628,6 +721,7 @@ select {
   }
 
   .featured-grid,
+  .story-grid,
   .repo-list {
     grid-template-columns: 1fr;
   }
