@@ -220,9 +220,10 @@ select:focus-visible {
   display: inline-block;
   vertical-align: middle;
   margin: 0 0.3rem;
-  background-position: center;
-  background-size: cover;
-  filter: grayscale(0.2) contrast(1.1);
+  background: linear-gradient(120deg, rgba(20, 241, 149, 0.15), rgba(20, 241, 149, 0.45), rgba(20, 241, 149, 0.15));
+  background-size: 200% 100%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  animation: capsule-flow 5s linear infinite;
 }
 
 .lead {
@@ -339,16 +340,74 @@ select:focus-visible {
 }
 
 .story-media {
+  position: relative;
   height: 220px;
-  background-position: center;
-  background-size: cover;
-  filter: grayscale(0.28) contrast(1.15);
-  transition: transform 0.7s var(--ease), filter 0.7s var(--ease);
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 20%, rgba(20, 241, 149, 0.18), transparent 45%), #0f0f0f;
+  transition: transform 0.7s var(--ease);
 }
 
 .story-card:hover .story-media {
   transform: scale(1.05);
-  filter: grayscale(0.12) contrast(1.15);
+}
+
+.motion-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(10, 10, 10, 0.6), transparent 55%);
+  pointer-events: none;
+}
+
+.motion-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(8px);
+  opacity: 0.8;
+  animation: orb-drift 9s ease-in-out infinite;
+}
+
+.orb-a {
+  width: 200px;
+  height: 200px;
+  left: -40px;
+  top: 18px;
+  background: rgba(20, 241, 149, 0.35);
+}
+
+.orb-b {
+  width: 140px;
+  height: 140px;
+  right: 14px;
+  bottom: 12px;
+  background: rgba(20, 241, 149, 0.2);
+  animation-delay: 0.8s;
+}
+
+.orb-c {
+  width: 170px;
+  height: 170px;
+  left: 20%;
+  top: -20px;
+  background: rgba(20, 241, 149, 0.3);
+  animation-delay: 0.35s;
+}
+
+.orb-d {
+  width: 210px;
+  height: 210px;
+  right: -50px;
+  bottom: -60px;
+  background: rgba(20, 241, 149, 0.16);
+  animation-delay: 1.15s;
+}
+
+.motion-line {
+  position: absolute;
+  inset: auto -40% 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(20, 241, 149, 0.8), transparent);
+  animation: sweep-line 4.8s linear infinite;
 }
 
 .story-copy {
@@ -696,6 +755,34 @@ select {
   }
 }
 
+@keyframes capsule-flow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes orb-drift {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+  50% {
+    transform: translateY(-18px) translateX(10px) scale(1.08);
+  }
+}
+
+@keyframes sweep-line {
+  from {
+    transform: translateX(-30%);
+  }
+  to {
+    transform: translateX(95%);
+  }
+}
+
 @media (max-width: 1120px) {
   .hero {
     grid-template-columns: 1fr;
@@ -771,5 +858,11 @@ select {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .motion-line,
+  .motion-orb,
+  .inline-image {
+    animation: none !important;
   }
 }
