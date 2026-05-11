@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -22,26 +22,48 @@
       <div class="ambient ambient-b" aria-hidden="true"></div>
 
       <header class="nav shell">
-        <a class="brand" href="/">// github cv</a>
+        <a class="brand" href="/"><span>//</span> github cv browser</a>
         <a id="profileLink" class="ghost-btn" href="#" target="_blank" rel="noreferrer">Open GitHub</a>
       </header>
 
       <section class="hero shell">
         <div class="hero-copy">
-          <p class="eyebrow">// live resume</p>
-          <h1>GitHub CV browsing with a cleaner, faster visual flow.</h1>
+          <p class="eyebrow">live profile intelligence</p>
+          <h1>
+            A GitHub-native
+            <span
+              class="inline-image"
+              role="img"
+              aria-label="Abstract engineering texture"
+              style="background-image:url('https://picsum.photos/seed/laolexcv/320/140')"
+            ></span>
+            CV browsing surface.
+          </h1>
           <p class="lead">
-            Profile details, language strengths, and project history load directly from GitHub and
-            stay filterable in one continuous layout.
+            One screen for profile identity, language signals, featured work, and repository depth.
           </p>
+          <div class="hero-cta">
+            <a id="heroProfileLink" class="cta-btn" href="#" target="_blank" rel="noreferrer">View GitHub Profile</a>
+          </div>
         </div>
-        <aside class="hero-aside" aria-label="Design preview">
-          <div class="term-row"><span class="dot"></span><span>PROFILE STREAM</span></div>
+
+        <aside class="hero-aside" aria-label="Live signal">
+          <div class="term-row"><span class="dot"></span><span>profile stream active</span></div>
           <div class="term-line"></div>
           <div class="term-line short"></div>
           <div class="term-line"></div>
           <div class="term-line short"></div>
+          <div class="term-line"></div>
         </aside>
+      </section>
+
+      <section class="signal-strip shell" aria-label="Scrolling status">
+        <div class="marquee">
+          <div class="marquee-track">
+            <span>live github profile</span><span>repository intelligence</span><span>language distribution</span><span>filtered browsing</span><span>project history</span><span>activity surface</span>
+            <span>live github profile</span><span>repository intelligence</span><span>language distribution</span><span>filtered browsing</span><span>project history</span><span>activity surface</span>
+          </div>
+        </div>
       </section>
 
       <section class="controls shell" aria-label="Repository filters">
@@ -79,14 +101,23 @@
           <div id="languages" class="languages"></div>
         </article>
 
-        <article class="panel repo-panel">
-          <div class="repo-header">
-            <h2>// repositories</h2>
-            <span id="repoCount" class="repo-count">0</span>
-          </div>
-          <div id="statusMessage" class="status">Loading repositories…</div>
-          <div id="repoList" class="repo-list"></div>
-        </article>
+        <div class="repos-stack">
+          <article class="panel featured-panel">
+            <div class="repo-header">
+              <h2>// featured repositories</h2>
+            </div>
+            <div id="featuredList" class="featured-grid"></div>
+          </article>
+
+          <article class="panel repo-panel">
+            <div class="repo-header">
+              <h2>// all repositories</h2>
+              <span id="repoCount" class="repo-count">0</span>
+            </div>
+            <div id="statusMessage" class="status">Loading repositories…</div>
+            <div id="repoList" class="repo-list"></div>
+          </article>
+        </div>
       </section>
 
       <footer class="footer shell">

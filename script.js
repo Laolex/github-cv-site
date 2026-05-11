@@ -1,9 +1,11 @@
 const DEFAULT_USERNAME = "Laolex"
 
 const profileLink = document.querySelector("#profileLink")
+const heroProfileLink = document.querySelector("#heroProfileLink")
 const profileBlock = document.querySelector("#profileBlock")
 const statsBlock = document.querySelector("#stats")
 const languagesBlock = document.querySelector("#languages")
+const featuredList = document.querySelector("#featuredList")
 const repoList = document.querySelector("#repoList")
 const repoCount = document.querySelector("#repoCount")
 const statusMessage = document.querySelector("#statusMessage")
@@ -55,8 +57,19 @@ function setStatus(message, isError = false) {
   statusMessage.classList.toggle("error", isError)
 }
 
+function sortRepos(repos, sort) {
+  return [...repos].sort((a, b) => {
+    if (sort === "stars") return b.stargazers_count - a.stargazers_count
+    if (sort === "forks") return b.forks_count - a.forks_count
+    if (sort === "name") return a.name.localeCompare(b.name)
+    return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+  })
+}
+
 function renderProfile(profile) {
-  profileLink.href = profile.html_url || `https://github.com/${DEFAULT_USERNAME}`
+  const profileUrl = profile.html_url || `https://github.com/${DEFAULT_USERNAME}`
+  profileLink.href = profileUrl
+  heroProfileLink.href = profileUrl
   profileLink.textContent = `Open @${profile.login || DEFAULT_USERNAME}`
 
   profileBlock.classList.remove("loading")
@@ -98,65 +111,67 @@ function renderLanguageFilter(repos) {
   const topLanguageMap = new Map()
   repos.forEach((repo) => {
     if (!repo.language) return
-    const prev = topLanguageMap.get(repo.language) || 0
-    topLanguageMap.set(repo.language, prev + 1)
+    topLanguageMap.set(repo.language, (topLanguageMap.get(repo.language) || 0) + 1)
   })
 
   const topLanguages = Array.from(topLanguageMap.entries())
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 6)
+    .slice(0, 8)
 
   languagesBlock.innerHTML = topLanguages
     .map(([language, count]) => `<span class="chip">${language} (${count})</span>`)
     .join("")
 }
 
-function applyFilters() {
-  const search = normalize(searchInput.value)
-  const language = languageFilter.value
-  const sort = sortFilter.value
+function renderFeatured(repos) {
+  const featured = sortRepos(repos, "stars").slice(0, 3)
+  featuredList.innerHTML = ""
 
-  let filtered = allRepos.filter((repo) => {
-    const inSearch =
-      !search ||
-      normalize(repo.name).includes(search) ||
-      normalize(repo.description).includes(search) ||
-      normalize((repo.topics || []).join(" ")).includes(search)
-    const inLanguage = !language || repo.language === language
-    return inSearch && inLanguage
+  if (!featured.length) {
+    featuredList.innerHTML = `<p class="status">No featured repositories available.</p>`
+    return
+  }
+
+  featured.forEach((repo) => {
+    const langColor = languageColor(repo.language)
+    const item = document.createElement("article")
+    item.className = "featured-item"
+    item.innerHTML = `
+      <a href="${repo.html_url}" target="_blank" rel="noreferrer">
+        <h3>${repo.name}</h3>
+        ${repo.description ? `<p>${repo.description}</p>` : `<p>No description provided.</p>`}
+        <div class="repo-meta">
+          <span class="lang-pill"><span class="lang-dot" style="background:${langColor}"></span>${repo.language || "Text"}</span>
+          <span>Stars ${formatNumber(repo.stargazers_count)}</span>
+          <span>Forks ${formatNumber(repo.forks_count)}</span>
+        </div>
+      </a>
+    `
+    featuredList.append(item)
   })
+}
 
-  filtered = filtered.sort((a, b) => {
-    if (sort === "stars") return b.stargazers_count - a.stargazers_count
-    if (sort === "forks") return b.forks_count - a.forks_count
-    if (sort === "name") return a.name.localeCompare(b.name)
-    return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-  })
-
-  repoCount.textContent = String(filtered.length)
+function renderRepoList(repos) {
   repoList.innerHTML = ""
 
-  if (!filtered.length) {
+  if (!repos.length) {
     setStatus("No repositories match this filter set.")
     return
   }
 
-  setStatus(`Showing ${filtered.length} repositories`)
+  setStatus(`Showing ${repos.length} repositories`)
 
-  filtered.forEach((repo) => {
+  repos.forEach((repo) => {
     const langColor = languageColor(repo.language)
     const topics = Array.isArray(repo.topics) ? repo.topics.slice(0, 3) : []
+
     const card = document.createElement("article")
     card.className = "repo"
     card.innerHTML = `
       <a href="${repo.html_url}" target="_blank" rel="noreferrer">
         <h3>${repo.name}</h3>
         ${repo.description ? `<p>${repo.description}</p>` : `<p>No description provided.</p>`}
-        ${
-          topics.length
-            ? `<div class="languages">${topics.map((topic) => `<span class="chip">${topic}</span>`).join("")}</div>`
-            : ""
-        }
+        ${topics.length ? `<div class="languages">${topics.map((topic) => `<span class="chip">${topic}</span>`).join("")}</div>` : ""}
         <div class="repo-meta">
           <span class="lang-pill"><span class="lang-dot" style="background:${langColor}"></span>${repo.language || "Text"}</span>
           <span>Stars ${formatNumber(repo.stargazers_count)}</span>
@@ -167,6 +182,29 @@ function applyFilters() {
     `
     repoList.append(card)
   })
+}
+
+function applyFilters() {
+  const search = normalize(searchInput.value)
+  const language = languageFilter.value
+  const sort = sortFilter.value
+
+  const filtered = sortRepos(
+    allRepos.filter((repo) => {
+      const inSearch =
+        !search ||
+        normalize(repo.name).includes(search) ||
+        normalize(repo.description).includes(search) ||
+        normalize((repo.topics || []).join(" ")).includes(search)
+      const inLanguage = !language || repo.language === language
+      return inSearch && inLanguage
+    }),
+    sort,
+  )
+
+  repoCount.textContent = String(filtered.length)
+  renderFeatured(filtered)
+  renderRepoList(filtered)
 }
 
 async function loadCv() {
@@ -183,7 +221,6 @@ async function loadCv() {
 
     const profile = await profileRes.json()
     const repos = await repoRes.json()
-
     allRepos = Array.isArray(repos) ? repos.filter((repo) => !repo.fork) : []
 
     renderProfile(profile)
@@ -191,9 +228,11 @@ async function loadCv() {
     applyFilters()
   } catch (error) {
     repoList.innerHTML = ""
+    featuredList.innerHTML = ""
     repoCount.textContent = "0"
     setStatus("Could not load data from GitHub right now. Refresh to retry.", true)
     profileLink.textContent = "Open GitHub"
+    heroProfileLink.removeAttribute("href")
     profileBlock.classList.remove("loading")
     profileBlock.innerHTML = `<p>GitHub profile is temporarily unavailable.</p>`
     statsBlock.innerHTML = ""
