@@ -30,120 +30,152 @@
       </header>
 
       <section class="hero shell">
-        <div class="hero-copy">
-          <p class="eyebrow">live profile intelligence</p>
-          <h1>
-            A GitHub-native
-            <span class="inline-image" role="img" aria-label="Animated signal capsule"></span>
-            CV browsing surface.
-          </h1>
-          <p class="lead">
-            One screen for profile identity, language signals, featured work, and repository depth.
-          </p>
-          <div class="hero-cta">
-            <a id="heroProfileLink" class="cta-btn" href="#" target="_blank" rel="noreferrer">View GitHub Profile</a>
+        <div class="bezel-shell reveal">
+          <div class="bezel-core hero-copy">
+            <p class="eyebrow">live profile intelligence</p>
+            <h1>
+              A GitHub-native
+              <span class="inline-image" role="img" aria-label="Animated signal capsule"></span>
+              CV browsing surface.
+            </h1>
+            <p class="lead">
+              One screen for profile identity, language signals, featured work, and repository depth.
+            </p>
+            <div class="hero-cta">
+              <a id="heroProfileLink" class="cta-btn" href="#" target="_blank" rel="noreferrer"
+                >View GitHub Profile</a
+              >
+            </div>
           </div>
         </div>
 
-        <aside class="hero-aside" aria-label="Live signal">
-          <div class="term-row"><span class="dot"></span><span>profile stream active</span></div>
-          <div class="command-bar">
-            <span class="command-prefix">query</span>
-            <span id="commandText" class="command-text">loading profile signal</span>
-          </div>
-          <div class="term-line"></div>
-          <div class="term-line short"></div>
-          <div class="term-line"></div>
-          <div class="term-line short"></div>
-          <div class="term-line"></div>
-        </aside>
+        <div class="bezel-shell reveal">
+          <aside class="bezel-core hero-aside" aria-label="Live signal">
+            <div class="term-row"><span class="dot"></span><span>profile stream active</span></div>
+            <div class="command-bar">
+              <span class="command-prefix">query</span>
+              <span id="commandText" class="command-text">loading profile signal</span>
+            </div>
+            <div class="term-line"></div>
+            <div class="term-line short"></div>
+            <div class="term-line"></div>
+            <div class="term-line short"></div>
+            <div class="term-line"></div>
+          </aside>
+        </div>
       </section>
 
       <section class="signal-strip shell" aria-label="Scrolling status">
-        <div class="marquee">
-          <div class="marquee-track">
-            <span>live github profile</span><span>repository intelligence</span><span>language distribution</span><span>filtered browsing</span><span>project history</span><span>activity surface</span>
-            <span>live github profile</span><span>repository intelligence</span><span>language distribution</span><span>filtered browsing</span><span>project history</span><span>activity surface</span>
+        <div class="bezel-shell reveal">
+          <div class="bezel-core marquee">
+            <div class="marquee-track">
+              <span>live github profile</span><span>repository intelligence</span
+              ><span>language distribution</span><span>filtered browsing</span
+              ><span>project history</span><span>activity surface</span>
+              <span>live github profile</span><span>repository intelligence</span
+              ><span>language distribution</span><span>filtered browsing</span
+              ><span>project history</span><span>activity surface</span>
+            </div>
           </div>
         </div>
       </section>
 
       <section class="story-grid shell">
-        <article class="story-card data-tilt reveal">
-          <div class="story-media motion-surface">
-            <div class="motion-orb orb-a"></div>
-            <div class="motion-orb orb-b"></div>
-            <div class="motion-line"></div>
-          </div>
-          <div class="story-copy">
-            <h3>Repository depth with less scanning</h3>
-            <p>Featured projects surface first, then full repository browsing continues in the same visual rhythm.</p>
+        <article class="story-card data-tilt reveal bezel-shell">
+          <div class="story-card-core bezel-core">
+            <div class="story-media motion-surface">
+              <div class="motion-orb orb-a"></div>
+              <div class="motion-orb orb-b"></div>
+              <div class="motion-line"></div>
+            </div>
+            <div class="story-copy">
+              <h3>Repository depth with less scanning</h3>
+              <p>
+                Featured projects surface first, then full repository browsing continues in the same
+                visual rhythm.
+              </p>
+            </div>
           </div>
         </article>
-        <article class="story-card data-tilt reveal">
-          <div class="story-media motion-surface">
-            <div class="motion-orb orb-c"></div>
-            <div class="motion-orb orb-d"></div>
-            <div class="motion-line"></div>
-          </div>
-          <div class="story-copy">
-            <h3>Signal-led profile context</h3>
-            <p>Language spread, profile metadata, and repo quality indicators stay visible while exploring work history.</p>
+        <article class="story-card data-tilt reveal bezel-shell">
+          <div class="story-card-core bezel-core">
+            <div class="story-media motion-surface">
+              <div class="motion-orb orb-c"></div>
+              <div class="motion-orb orb-d"></div>
+              <div class="motion-line"></div>
+            </div>
+            <div class="story-copy">
+              <h3>Signal-led profile context</h3>
+              <p>
+                Language spread, profile metadata, and repo quality indicators stay visible while
+                exploring work history.
+              </p>
+            </div>
           </div>
         </article>
       </section>
 
-      <section class="controls shell" aria-label="Repository filters">
-        <label class="field">
-          <span>Search repositories</span>
-          <input id="searchInput" type="search" placeholder="Type project name or topic" />
-        </label>
-        <label class="field">
-          <span>Language</span>
-          <select id="languageFilter">
-            <option value="">All languages</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>Sort by</span>
-          <select id="sortFilter">
-            <option value="updated">Recently updated</option>
-            <option value="stars">Most starred</option>
-            <option value="forks">Most forked</option>
-            <option value="name">Name (A-Z)</option>
-          </select>
-        </label>
+      <section class="shell controls-shell">
+        <div class="bezel-shell reveal">
+          <div class="bezel-core controls" aria-label="Repository filters">
+            <label class="field">
+              <span>Search repositories</span>
+              <input id="searchInput" type="search" placeholder="Type project name or topic" />
+            </label>
+            <label class="field">
+              <span>Language</span>
+              <select id="languageFilter">
+                <option value="">All languages</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Sort by</span>
+              <select id="sortFilter">
+                <option value="updated">Recently updated</option>
+                <option value="stars">Most starred</option>
+                <option value="forks">Most forked</option>
+                <option value="name">Name (A-Z)</option>
+              </select>
+            </label>
+          </div>
+        </div>
       </section>
 
       <section class="content-grid shell">
-        <article class="panel profile-panel">
-          <h2>// profile</h2>
-          <div id="profileBlock" class="profile-block loading">
-            <div class="skeleton avatar"></div>
-            <div class="skeleton line"></div>
-            <div class="skeleton line short"></div>
-            <div class="skeleton line"></div>
-          </div>
-          <div id="stats" class="stats"></div>
-          <div id="languages" class="languages"></div>
-        </article>
+        <div class="bezel-shell profile-panel-shell reveal">
+          <article class="bezel-core panel profile-panel">
+            <h2>// profile</h2>
+            <div id="profileBlock" class="profile-block loading">
+              <div class="skeleton avatar"></div>
+              <div class="skeleton line"></div>
+              <div class="skeleton line short"></div>
+              <div class="skeleton line"></div>
+            </div>
+            <div id="stats" class="stats"></div>
+            <div id="languages" class="languages"></div>
+          </article>
+        </div>
 
         <div class="repos-stack">
-          <article class="panel featured-panel">
-            <div class="repo-header">
-              <h2>// featured repositories</h2>
-            </div>
-            <div id="featuredList" class="featured-grid"></div>
-          </article>
+          <div class="bezel-shell reveal">
+            <article class="bezel-core panel featured-panel">
+              <div class="repo-header">
+                <h2>// featured repositories</h2>
+              </div>
+              <div id="featuredList" class="featured-grid"></div>
+            </article>
+          </div>
 
-          <article class="panel repo-panel">
-            <div class="repo-header">
-              <h2>// all repositories</h2>
-              <span id="repoCount" class="repo-count">0</span>
-            </div>
-            <div id="statusMessage" class="status">Loading repositories…</div>
-            <div id="repoList" class="repo-list"></div>
-          </article>
+          <div class="bezel-shell reveal">
+            <article class="bezel-core panel repo-panel">
+              <div class="repo-header">
+                <h2>// all repositories</h2>
+                <span id="repoCount" class="repo-count">0</span>
+              </div>
+              <div id="statusMessage" class="status">Loading repositories…</div>
+              <div id="repoList" class="repo-list"></div>
+            </article>
+          </div>
         </div>
       </section>
 
