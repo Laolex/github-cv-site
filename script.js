@@ -1,6 +1,8 @@
 const DEFAULT_USERNAME = "Laolex"
+const THEME_STORAGE_KEY = "github-cv-theme"
 
 const profileLink = document.querySelector("#profileLink")
+const themeToggle = document.querySelector("#themeToggle")
 const heroProfileLink = document.querySelector("#heroProfileLink")
 const profileBlock = document.querySelector("#profileBlock")
 const statsBlock = document.querySelector("#stats")
@@ -18,6 +20,25 @@ let allRepos = []
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 let revealObserver
 let typewriterStarted = false
+
+function getSystemTheme() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+}
+
+function applyTheme(theme) {
+  const normalized = theme === "light" ? "light" : "dark"
+  document.documentElement.setAttribute("data-theme", normalized)
+  if (!themeToggle) return
+  const darkActive = normalized === "dark"
+  themeToggle.setAttribute("aria-pressed", String(!darkActive))
+  themeToggle.textContent = `Theme: ${darkActive ? "Dark" : "Light"}`
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY)
+  const initialTheme = savedTheme === "dark" || savedTheme === "light" ? savedTheme : getSystemTheme()
+  applyTheme(initialTheme)
+}
 
 function formatNumber(value) {
   return Number(value || 0).toLocaleString("en-US")
@@ -328,5 +349,14 @@ function wireTilt() {
 searchInput.addEventListener("input", applyFilters)
 languageFilter.addEventListener("change", applyFilters)
 sortFilter.addEventListener("change", applyFilters)
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark"
+    const next = current === "dark" ? "light" : "dark"
+    applyTheme(next)
+    localStorage.setItem(THEME_STORAGE_KEY, next)
+  })
+}
 
+initTheme()
 void loadCv()
