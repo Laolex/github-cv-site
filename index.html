@@ -24,8 +24,8 @@
       <header class="nav shell">
         <a class="brand" href="/"><span>//</span> github cv browser</a>
         <div class="nav-actions">
-          <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">Theme: Dark</button>
-          <a id="profileLink" class="ghost-btn" href="#" target="_blank" rel="noreferrer">Open GitHub</a>
+          <button id="themeToggle" class="theme-toggle magnetic" type="button" aria-pressed="false">Theme: Dark</button>
+          <a id="profileLink" class="ghost-btn magnetic" href="#" target="_blank" rel="noreferrer">Open GitHub</a>
         </div>
       </header>
 
@@ -42,9 +42,14 @@
               One screen for profile identity, language signals, featured work, and repository depth.
             </p>
             <div class="hero-cta">
-              <a id="heroProfileLink" class="cta-btn" href="#" target="_blank" rel="noreferrer"
-                >View GitHub Profile</a
-              >
+              <a id="heroProfileLink" class="cta-btn magnetic" href="#" target="_blank" rel="noreferrer">
+                <span>View GitHub Profile</span>
+                <span class="cta-trailing" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </a>
             </div>
           </div>
         </div>
@@ -82,7 +87,7 @@
 
       <section class="story-grid shell">
         <article class="story-card data-tilt reveal bezel-shell">
-          <div class="story-card-core bezel-core">
+          <div class="story-card-core bezel-core spotlight-card">
             <div class="story-media motion-surface">
               <div class="motion-orb orb-a"></div>
               <div class="motion-orb orb-b"></div>
@@ -98,7 +103,7 @@
           </div>
         </article>
         <article class="story-card data-tilt reveal bezel-shell">
-          <div class="story-card-core bezel-core">
+          <div class="story-card-core bezel-core spotlight-card">
             <div class="story-media motion-surface">
               <div class="motion-orb orb-c"></div>
               <div class="motion-orb orb-d"></div>

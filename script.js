@@ -160,7 +160,7 @@ function renderFeatured(repos) {
   featured.forEach((repo) => {
     const langColor = languageColor(repo.language)
     const item = document.createElement("article")
-    item.className = "featured-item data-tilt reveal"
+    item.className = "featured-item data-tilt reveal spotlight-card"
     item.innerHTML = `
       <a href="${repo.html_url}" target="_blank" rel="noreferrer">
         <h3>${repo.name}</h3>
@@ -191,7 +191,7 @@ function renderRepoList(repos) {
     const topics = Array.isArray(repo.topics) ? repo.topics.slice(0, 3) : []
 
     const card = document.createElement("article")
-    card.className = "repo data-tilt reveal"
+    card.className = "repo data-tilt reveal spotlight-card"
     card.innerHTML = `
       <a href="${repo.html_url}" target="_blank" rel="noreferrer">
         <h3>${repo.name}</h3>
@@ -210,6 +210,8 @@ function renderRepoList(repos) {
 
   wireReveal()
   wireTilt()
+  wireSpotlight()
+  wireMagnetic()
 }
 
 function applyFilters() {
@@ -257,6 +259,8 @@ async function loadCv() {
     wireTypewriter()
     wireReveal()
     wireTilt()
+    wireSpotlight()
+    wireMagnetic()
   } catch (error) {
     repoList.innerHTML = ""
     featuredList.innerHTML = ""
@@ -346,6 +350,42 @@ function wireTilt() {
   })
 }
 
+function wireSpotlight() {
+  if (prefersReducedMotion) return
+  const cards = document.querySelectorAll(".spotlight-card")
+  cards.forEach((card) => {
+    if (card.dataset.spotlightBound === "true") return
+    card.dataset.spotlightBound = "true"
+    card.addEventListener("mousemove", (event) => {
+      const rect = card.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+      card.style.setProperty("--mx", `${x}px`)
+      card.style.setProperty("--my", `${y}px`)
+    })
+  })
+}
+
+function wireMagnetic() {
+  if (prefersReducedMotion) return
+  const magnets = document.querySelectorAll(".magnetic")
+  magnets.forEach((item) => {
+    if (item.dataset.magneticBound === "true") return
+    item.dataset.magneticBound = "true"
+    item.addEventListener("mousemove", (event) => {
+      const rect = item.getBoundingClientRect()
+      const x = (event.clientX - rect.left) / rect.width - 0.5
+      const y = (event.clientY - rect.top) / rect.height - 0.5
+      item.style.setProperty("--mag-x", `${x * 7}px`)
+      item.style.setProperty("--mag-y", `${y * 7}px`)
+    })
+    item.addEventListener("mouseleave", () => {
+      item.style.setProperty("--mag-x", "0px")
+      item.style.setProperty("--mag-y", "0px")
+    })
+  })
+}
+
 searchInput.addEventListener("input", applyFilters)
 languageFilter.addEventListener("change", applyFilters)
 sortFilter.addEventListener("change", applyFilters)
@@ -359,4 +399,6 @@ if (themeToggle) {
 }
 
 initTheme()
+wireSpotlight()
+wireMagnetic()
 void loadCv()
